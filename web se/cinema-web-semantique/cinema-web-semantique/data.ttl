@@ -1,0 +1,45 @@
+@prefix cin:  <http://example.org/cinema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+# Genres
+cin:Drame        a cin:Genre ; rdfs:label "Drame" .
+cin:Thriller     a cin:Genre ; rdfs:label "Thriller" .
+cin:Documentaire a cin:Genre ; rdfs:label "Documentaire" .
+
+# Salles
+cin:Colisee    a cin:Salle ; rdfs:label "Cinéma Le Colisée" ; cin:ville "Tunis" .
+cin:PatheTunis a cin:Salle ; rdfs:label "Pathé Tunis City"  ; cin:ville "Tunis" .
+cin:Rio        a cin:Salle ; rdfs:label "Cinéma Le Rio"     ; cin:ville "Sfax" .
+
+# Réalisateurs
+cin:MehdiBarsaoui   a cin:Realisateur ; foaf:name "Mehdi Barsaoui"   ; cin:realise cin:UnFils .
+cin:KaoutherBenHania a cin:Realisateur ; foaf:name "Kaouther Ben Hania" ;
+                     cin:realise cin:LaBelleEtLaMeute , cin:LesFillesDOlfa .
+cin:MohamedBenAttia a cin:Realisateur ; foaf:name "Mohamed Ben Attia" ; cin:realise cin:Hedi .
+
+# Acteurs
+cin:SamiBouajila    a cin:Acteur ; foaf:name "Sami Bouajila"    ; cin:joueDans cin:UnFils .
+cin:NajlaBenAbdallah a cin:Acteur ; foaf:name "Najla Ben Abdallah" ; cin:joueDans cin:UnFils .
+cin:MariamAlFerjani a cin:Acteur ; foaf:name "Mariam Al Ferjani" ; cin:joueDans cin:LaBelleEtLaMeute .
+cin:GhanemZrelli    a cin:Acteur ; foaf:name "Ghanem Zrelli"    ; cin:joueDans cin:LaBelleEtLaMeute .
+cin:MajdMastoura    a cin:Acteur ; foaf:name "Majd Mastoura"    ; cin:joueDans cin:Hedi .
+cin:RymBenMessaoud  a cin:Acteur ; foaf:name "Rym Ben Messaoud" ; cin:joueDans cin:Hedi .
+
+# Hend Sabri : AUCUN type déclaré -> sera inférée Acteur grâce à rdfs:domain de joueDans
+cin:HendSabri foaf:name "Hend Sabri" ; cin:joueDans cin:LesFillesDOlfa .
+
+# Films
+cin:UnFils a cin:Film ; cin:titre "Un fils" ; cin:anneeSortie 2019 ; cin:duree 96 ;
+    cin:aGenre cin:Drame ; cin:projeteDans cin:Colisee , cin:PatheTunis .
+
+cin:LaBelleEtLaMeute a cin:Film ; cin:titre "La Belle et la Meute" ; cin:anneeSortie 2017 ; cin:duree 100 ;
+    cin:aGenre cin:Drame , cin:Thriller ; cin:projeteDans cin:Colisee .
+
+cin:Hedi a cin:Film ; cin:titre "Hedi" ; cin:anneeSortie 2016 ; cin:duree 88 ;
+    cin:aGenre cin:Drame ; cin:projeteDans cin:Rio .
+
+cin:LesFillesDOlfa a cin:Film ; cin:titre "Les Filles d'Olfa" ; cin:anneeSortie 2023 ; cin:duree 107 ;
+    cin:aGenre cin:Documentaire ; cin:projeteDans cin:PatheTunis .
+cin:MonFilm a cin:Film ; cin:titre "Mon film" ; cin:anneeSortie 2025 ; cin:duree 90 ;
+    cin:aGenre cin:Drame ; cin:projeteDans cin:Rio .

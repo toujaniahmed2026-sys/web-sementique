@@ -1,0 +1,27 @@
+@prefix cin:  <http://example.org/cinema#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+# ---------- CLASSES ----------
+cin:Personne    a rdfs:Class ; rdfs:subClassOf foaf:Person ; rdfs:label "Personne"@fr .
+cin:Realisateur a rdfs:Class ; rdfs:subClassOf cin:Personne ; rdfs:label "Réalisateur"@fr .
+cin:Acteur      a rdfs:Class ; rdfs:subClassOf cin:Personne ; rdfs:label "Acteur"@fr .
+cin:Film        a rdfs:Class ; rdfs:label "Film"@fr .
+cin:Genre       a rdfs:Class ; rdfs:label "Genre"@fr .
+cin:Salle       a rdfs:Class ; rdfs:label "Salle de cinéma"@fr .
+
+# ---------- PROPRIÉTÉS ----------
+cin:participeA a rdf:Property ; rdfs:domain cin:Personne ; rdfs:range cin:Film .
+cin:realise    a rdf:Property ; rdfs:subPropertyOf cin:participeA ;
+               rdfs:domain cin:Realisateur ; rdfs:range cin:Film .
+cin:joueDans   a rdf:Property ; rdfs:subPropertyOf cin:participeA ;
+               rdfs:domain cin:Acteur ; rdfs:range cin:Film .
+cin:aGenre     a rdf:Property ; rdfs:domain cin:Film  ; rdfs:range cin:Genre .
+cin:projeteDans a rdf:Property ; rdfs:domain cin:Film ; rdfs:range cin:Salle .
+cin:titre      a rdf:Property ; rdfs:domain cin:Film  ; rdfs:range xsd:string .
+cin:anneeSortie a rdf:Property ; rdfs:domain cin:Film ; rdfs:range xsd:integer .
+cin:duree      a rdf:Property ; rdfs:domain cin:Film  ; rdfs:range xsd:integer .
+cin:ville      a rdf:Property ; rdfs:domain cin:Salle ; rdfs:range xsd:string .
+# Vocabulaire réutilisé : foaf:name (nom des personnes) et foaf:Person

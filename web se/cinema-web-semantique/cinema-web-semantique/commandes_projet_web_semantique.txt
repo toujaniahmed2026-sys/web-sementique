@@ -1,0 +1,118 @@
+=====================================================================
+ COMMANDES - Mini-projet Web Semantique "Cinema tunisien"
+ Ahmed Toujani - Polytech Intl
+=====================================================================
+Repere : une ligne qui commence par C:\...> se tape dans le TERMINAL.
+         une ligne qui commence par >>> se tape dans la CONSOLE PYTHON,
+         sans aucun espace au debut de la ligne.
+
+---------------------------------------------------------------------
+0. OUVRIR LE PROJET ET ACTIVER L'ENVIRONNEMENT (terminal)
+---------------------------------------------------------------------
+cd C:\Users\MsI\Downloads\seances\files\cinema-web-semantique\cinema-web-semantique
+venv\Scripts\activate
+
+---------------------------------------------------------------------
+1. INSTALLATION (une seule fois)
+---------------------------------------------------------------------
+pip install -r requirements.txt
+
+---------------------------------------------------------------------
+2. COMPARAISON AVEC / SANS INFERENCE (terminal)
+---------------------------------------------------------------------
+python demo_inference.py
+
+Resultat attendu :
+  Nombre de triplets   : 121 -> 287
+  Personnes (foaf)     : 0 -> 10
+  Acteurs (cin:Acteur) : 6 -> 7
+  Participations       : 0 -> 11
+
+---------------------------------------------------------------------
+3. TESTS DANS LA CONSOLE PYTHON
+---------------------------------------------------------------------
+python
+
+>>> from graph import G_BRUT, G_INFERE
+>>> print(len(G_BRUT), len(G_INFERE))
+>>> import queries as q
+>>> for r in q.films(G_BRUT): print(r)
+>>> for r in q.realisateurs(G_BRUT): print(r)
+>>> print(len(q.personnes(G_BRUT)), len(q.personnes(G_INFERE)))
+>>> print(len(q.participations(G_BRUT)), len(q.participations(G_INFERE)))
+
+Exemple Hend Sabri (ce que chaque graphe sait sur elle) :
+>>> from rdflib import URIRef
+>>> hend = URIRef("http://example.org/cinema#HendSabri")
+>>> for p, o in G_BRUT.predicate_objects(hend): print(p, o)
+>>> for p, o in G_INFERE.predicate_objects(hend): print(p, o)
+
+Quitter la console :
+>>> exit()
+
+Si des lignes "..." apparaissent : Ctrl + C, puis retaper la ligne
+sans espace au debut.
+
+---------------------------------------------------------------------
+4. LANCER LE WEB SERVICE (terminal)
+---------------------------------------------------------------------
+python app.py
+
+Le service tourne sur http://127.0.0.1:5000
+Laisser ce terminal ouvert. Pour arreter : Ctrl + C.
+Ouvrir les URL ci-dessous dans le navigateur, ou dans un
+DEUXIEME terminal avec curl.exe.
+
+---------------------------------------------------------------------
+5. URL A TESTER (navigateur ou curl.exe)
+---------------------------------------------------------------------
+http://127.0.0.1:5000/api/films
+http://127.0.0.1:5000/api/films?annee_min=2017
+http://127.0.0.1:5000/api/films?duree_min=100
+http://127.0.0.1:5000/api/films/UnFils
+http://127.0.0.1:5000/api/genres/Drame/films
+http://127.0.0.1:5000/api/realisateurs
+http://127.0.0.1:5000/api/realisateurs?inference=true
+http://127.0.0.1:5000/api/acteurs/Sami/films
+http://127.0.0.1:5000/api/salles
+http://127.0.0.1:5000/api/personnes?inference=false
+http://127.0.0.1:5000/api/personnes?inference=true
+http://127.0.0.1:5000/api/inference/comparaison
+
+Exemples avec curl (deuxieme terminal) :
+curl.exe http://127.0.0.1:5000/api/films/UnFils
+curl.exe "http://127.0.0.1:5000/api/films?annee_min=2017"
+
+---------------------------------------------------------------------
+6. TESTER LES ERREURS
+---------------------------------------------------------------------
+Erreur 400 (parametre invalide) :
+http://127.0.0.1:5000/api/films?annee_min=abc
+
+Erreur 404 (ressource inconnue) :
+http://127.0.0.1:5000/api/films/Inconnu
+
+Avec curl, afficher aussi le code HTTP :
+curl.exe -i "http://127.0.0.1:5000/api/films?annee_min=abc"
+curl.exe -i http://127.0.0.1:5000/api/films/Inconnu
+
+---------------------------------------------------------------------
+7. AVANT LA DEMO : RETIRER "MON FILM"
+---------------------------------------------------------------------
+Ouvrir data.ttl et supprimer le bloc cin:MonFilm (la ligne qui
+commence par "cin:MonFilm a cin:Film ; ..." et ses lignes suivantes
+jusqu'au point final). Sauvegarder, puis relancer :
+python app.py
+Les films repassent de 5 a 4.
+
+---------------------------------------------------------------------
+8. ERREURS FREQUENTES
+---------------------------------------------------------------------
+ModuleNotFoundError: rdflib
+  -> venv\Scripts\activate puis pip install -r requirements.txt
+
+"annee_min doit etre un entier positif"
+  -> ce n'est pas une panne : erreur 400 volontaire, utiliser un nombre.
+
+python app.py impossible : port 5000 deja utilise
+  -> fermer l'autre terminal qui fait tourner app.py (Ctrl + C).
